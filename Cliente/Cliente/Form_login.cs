@@ -52,6 +52,8 @@ namespace Cliente
                         if (mensaje == "Si")
                         {
                             MessageBox.Show("Registro Completado");
+                            Register_txt.Text = "";
+                            register_passw_txt.Text = "";
                         }
                         else
                         {
@@ -129,6 +131,11 @@ namespace Cliente
             {
                 loggin_password_txt.PasswordChar = '*';
             }
+        }
+
+        private void Form_login_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void back_btn_Click(object sender, EventArgs e)

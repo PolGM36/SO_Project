@@ -17,7 +17,11 @@ namespace Cliente
         public Form_connect()
         {
             InitializeComponent();
-            
+            int width = this.Width;
+            int height = this.Height;
+
+            start_btn.Location = new Point((width - start_btn.Width) / 2, (height - start_btn.Height) / 2);
+            label1.Location = new Point((width - label1.Width) / 2, (height - label1.Height * 4) / 2);
         }
         Socket server;
 

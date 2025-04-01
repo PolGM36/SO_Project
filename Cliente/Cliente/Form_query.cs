@@ -112,15 +112,64 @@ namespace Cliente
 
         private void back_btn_Click(object sender, EventArgs e)
         {
-            if(server != null)
+            if (server != null && server.Connected)
             {
-                if (server.Connected)
-                {
-                    Form_login form_login = new Form_login();
-                    form_login.SetServer(server); // Asegura que el socket se pasa
-                    form_login.Show();
-                    this.Close();
-                }
+                string mensaje = "8/" + this.user;
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
+
+                this.Hide(); // Oculta en vez de cerrar
+                Form_login form_login = new Form_login();
+                form_login.SetServer(server); // Mantiene la misma conexión
+                form_login.Show();
+            }
+        }
+
+        private void Service_btn_Click(object sender, EventArgs e)
+        {
+            string mensaje = "6/";
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+
+            byte[] msg2 = new byte[80];
+            server.Receive(msg2);
+            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+            ServiceLbl.Text = mensaje;
+        }
+
+        private void OnlineList_btn_Click(object sender, EventArgs e)
+        {
+            string mensaje = "7/";
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+
+            byte[] msg2 = new byte[1024]; // Aumentamos el tamaño del buffer
+            server.Receive(msg2);
+            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+            // Procesar la lista de conectados
+            string[] partes = mensaje.Split('/');
+            int numUsuarios = int.Parse(partes[0]); // Primer elemento es el número de usuarios
+
+            // Mostrar en Label con saltos de línea
+            Online_lbl.Text = $"Conectados ({numUsuarios}):\n";
+
+            for (int i = 1; i <= numUsuarios; i++)
+            {
+                Online_lbl.Text += partes[i] + "\n";
+            }
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (server.Connected)
+            {
+                Form_loby form_loby = new Form_loby();
+                form_loby.SetUser(user);
+                form_loby.SetServer(this.server);
+                form_loby.Show();
+                this.Close(); // Cierra el form_login
             }
         }
     }
