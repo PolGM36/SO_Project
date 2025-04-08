@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Cliente
@@ -14,10 +14,17 @@ namespace Cliente
     public partial class Form_query: Form
     {
         Socket server;
+        Thread atender;
         string user;
         public Form_query()
         {
             InitializeComponent();
+
+            CheckForIllegalCrossThreadCalls = false;
+
+            ThreadStart ts = delegate { AtenderServidor(); };
+            atender = new Thread(ts);
+            atender.Start();
         }
 
         public void SetServer(Socket server)
@@ -46,56 +53,18 @@ namespace Cliente
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
 
-                            byte[] msg2 = new byte[80];
-                            server.Receive(msg2);
-                            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                            if (mensaje != "0")
-                            {
-                                MessageBox.Show("La partida se jugo: " + mensaje);
-                            }
-                            else
-                            {
-                                MessageBox.Show("La partida no se ha encontrado");
-                            }
                         }
                         else if (radioButton2.Checked)
                         {
                             string mensaje = "4/" + Query_txt.Text;
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
-
-                            byte[] msg2 = new byte[80];
-                            server.Receive(msg2);
-                            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-                            if (mensaje != "0")
-                            {
-                                MessageBox.Show("La partida duró: " + mensaje + " minutos");
-                            }
-                            else
-                            {
-                                MessageBox.Show("La partida no se ha encontrado");
-                            }
                         }
                         else
                         {
                             string mensaje = "5/" + Query_txt.Text;
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
-
-                            byte[] msg2 = new byte[80];
-                            server.Receive(msg2);
-                            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-
-                            if (mensaje != "0")
-                            {
-                                MessageBox.Show("El ganador fue el jugador: " + mensaje);
-                            }
-                            else
-                            {
-                                MessageBox.Show("La partida no se ha encontrado");
-                            }
                         }
                     }
                     catch (Exception ex)
@@ -118,6 +87,8 @@ namespace Cliente
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
 
+                atender.Abort();
+
                 this.Hide(); // Oculta en vez de cerrar
                 Form_login form_login = new Form_login();
                 form_login.SetServer(server); // Mantiene la misma conexión
@@ -130,37 +101,93 @@ namespace Cliente
             string mensaje = "6/";
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
             server.Send(msg);
-
-            byte[] msg2 = new byte[80];
-            server.Receive(msg2);
-            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-            ServiceLbl.Text = mensaje;
         }
 
         private void OnlineList_btn_Click(object sender, EventArgs e)
         {
-            string mensaje = "7/";
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg);
-
-            byte[] msg2 = new byte[1024]; // Aumentamos el tamaño del buffer
-            server.Receive(msg2);
-            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-            // Procesar la lista de conectados
-            string[] partes = mensaje.Split('/');
-            int numUsuarios = int.Parse(partes[0]); // Primer elemento es el número de usuarios
-
-            // Mostrar en Label con saltos de línea
-            Online_lbl.Text = $"Conectados ({numUsuarios}):\n";
-
-            for (int i = 1; i <= numUsuarios; i++)
-            {
-                Online_lbl.Text += partes[i] + "\n";
-            }
-
         }
 
+        private void AtenderServidor()
+        {
+            while (true)
+            {
+                if(server != null && server.Connected)
+                {
+                    int numUsuarios;
+                    byte[] msg2 = new byte[1024]; // Aumentamos el tamaño del buffer
+                    server.Receive(msg2);
+                    string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
+                    int codigo = Convert.ToInt32(trozos[0]);
+                    string mensaje = trozos[1].Split('\0')[0];
+                    switch (codigo)
+                    {
+                        case 1: //consultar usuario
+                            break;
+                        case 2://insertar usuario
+                            break;
+                        case 3://consultar tiempo
+                            if (mensaje != "0")
+                            {
+                                MessageBox.Show("La partida se jugo: " + mensaje);
+                            }
+                            else
+                            {
+                                MessageBox.Show("La partida no se ha encontrado");
+                            }
+                            break;
+                        case 4://consultar duracion
+                            if (mensaje != "0")
+                            {
+                                MessageBox.Show("La partida duró: " + mensaje + " minutos");
+                            }
+                            else
+                            {
+                                MessageBox.Show("La partida no se ha encontrado");
+                            }
+                            break;
+                        case 5://consultar ganador
+                            if (mensaje != "0")
+                            {
+                                MessageBox.Show("El ganador fue el jugador: " + mensaje);
+                            }
+                            else
+                            {
+                                MessageBox.Show("La partida no se ha encontrado");
+                            }
+                            break;
+                        case 6://contador
+                            ServiceLbl.Text = mensaje;
+                            break;
+                        case 7://consultar lista conectados
+                               // Procesar la lista de conectados
+                            numUsuarios = int.Parse(trozos[1]); // Primer elemento es el número de usuarios
+                            
+                            // Mostrar en Label con saltos de línea
+                            Online_lbl.Text = $"Conectados ({numUsuarios}):\n";
+
+                            for (int i = 2; i <= numUsuarios + 1; i++)
+                            {
+                                Online_lbl.Text += trozos[i] + "\n";
+                            }
+                            break;
+                        case 8://consultar lista conectados
+                               // Procesar la lista de conectados
+                            numUsuarios = int.Parse(trozos[1]); // Primer elemento es el número de usuarios
+
+                            // Mostrar en Label con saltos de línea
+                            Online_lbl.Text = $"Conectados ({numUsuarios}):\n";
+                            if(numUsuarios > 0)
+                            {
+                                for (int i = 2; i <= numUsuarios + 1; i++)
+                                {
+                                    Online_lbl.Text += trozos[i] + "\n";
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             if (server.Connected)
@@ -171,6 +198,10 @@ namespace Cliente
                 form_loby.Show();
                 this.Close(); // Cierra el form_login
             }
+        }
+
+        private void Form_query_Load(object sender, EventArgs e)
+        {
         }
     }
 }

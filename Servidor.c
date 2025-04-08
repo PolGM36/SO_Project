@@ -10,6 +10,8 @@
 
 int contador;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+int i;
+int sockets[100];
 
 typedef struct{
 	char nombre[20];
@@ -103,7 +105,7 @@ void consultar_usuario(MYSQL *conn, char *username, char *password, char *respue
 		sprintf(respuesta, "0");
 	} 
 	else {
-		sprintf(respuesta, "%s", row[0]);  
+		sprintf(respuesta, "1/%s", row[0]);  
 		
 		pthread_mutex_lock(&mutex);
 		int res = PonConectado(&miLista, row[0]);
@@ -130,10 +132,10 @@ void insertar_usuario(MYSQL *conn, char *username, char *password, char *respues
 	
 	if (mysql_query(conn, consulta)) {   
 		printf("Error al insertar datos en la base %u %s\n", mysql_errno(conn), mysql_error(conn)); 
-		strcpy(respuesta, "No");
+		strcpy(respuesta, "2/No");
 	} else {
 
-		strcpy(respuesta, "Si");
+		strcpy(respuesta, "2/Si");
 	}
 }
 
@@ -157,7 +159,7 @@ void consultar_tiempo(MYSQL *conn, int id_m, char *respuesta) {
 		printf("No se han obtenido datos en la consulta\n");   
 		sprintf(respuesta, "0");
 	} else {
-		sprintf(respuesta, "%s", row[0]);  
+		sprintf(respuesta, "3/%s", row[0]);  
 	}
 	
 	mysql_free_result(resultado);
@@ -181,7 +183,7 @@ void consultar_duracion(MYSQL *conn, int id_m, char *respuesta) {
 		printf("No se han obtenido datos en la consulta\n");   
 		sprintf(respuesta, "0");
 	} else {
-		sprintf(respuesta, "%s", row[0]);  
+		sprintf(respuesta, "4/%s", row[0]);  
 	}
 	
 	mysql_free_result(resultado);
@@ -206,7 +208,7 @@ void consultar_ganador(MYSQL *conn, int id_m, char *respuesta) {
 		printf("No se han obtenido datos en la consulta\n");   
 		sprintf(respuesta, "0");
 	} else {
-		sprintf(respuesta, "%s", row[0]);  
+		sprintf(respuesta, "5/%s", row[0]);  
 	}
 	
 	mysql_free_result(resultado);
@@ -231,7 +233,7 @@ void *AtenderCliente (void *socket)
 		}
 		
 		// Conectar a la base de datos
-		if (mysql_real_connect(conn, "localhost", "root", "mysql", "GAME", 0, NULL, 0) == NULL) {
+		if (mysql_real_connect(conn, "shiva2.upc.es", "root", "mysql", "M4_GAME", 0, NULL, 0) == NULL) {
 			printf("Error de conexion a la base de datos: %s\n", mysql_error(conn));
 			mysql_close(conn);
 			return 1;
@@ -307,39 +309,69 @@ void *AtenderCliente (void *socket)
 			}
 			else if (codigo == 6)
 			{
-				sprintf(respuesta, "%d", contador);
+				sprintf(respuesta, "6/%d", contador);
 			}
 			else if(codigo == 7)
 			{
 				DameConectados(&miLista, conectados);
-				sprintf(respuesta, "%s", conectados);
+
+				char copia_conectados[500];
+				strcpy(copia_conectados, conectados); // Copia ANTES de usar strtok
+				printf("Copia Conectados:%s", copia_conectados);
 				char *p = strtok(conectados, "/");
 				int n = atoi(p);
-				for(int i =0; i<n; i++)
+
+				for (int i = 0; i < n; i++)
 				{
 					char nom[20];
 					p = strtok(NULL, "/");
 					strcpy(nom, p);
 					printf("Conectado: %s\n", nom);
 				}
+
+				char notificacion[500];
+				sprintf(notificacion, "7/%s", copia_conectados);
+
+				// Enviar a todos los conectados
+				for (int j = 0; j < n; j++)
+				{
+					write(sockets[j], notificacion, strlen(notificacion));
+				}
+
 			}
-			else
+			else if (codigo == 8)
 			{
 				EliminaConectado(&miLista, username);
 				DameConectados(&miLista, conectados);
-				
+
+				// COPIA antes de usar strtok
+				char copia_conectados[500];
+				strcpy(copia_conectados, conectados);
+
 				char *p = strtok(conectados, "/");
 				int n = atoi(p);
-				for(int i =0; i<n; i++)
+				for(int i = 0; i < n; i++)
 				{
 					char nom[20];
 					p = strtok(NULL, "/");
 					strcpy(nom, p);
 					printf("Conectado: %s\n", nom);
 				}
+
+				// Ahora usa la copia que NO se ha modificado
+				char notificacion[500];
+				sprintf(notificacion, "8/%s", copia_conectados);
+				printf("%s\n", notificacion);
+
+				// Enviar a todos
+				for(int j = 0; j < n; j++)
+				{
+					write(sockets[j], notificacion, strlen(notificacion));
+				}
+
 			}
 			
-			if (codigo != 0)
+			if (codigo != 0 && codigo != 7 && codigo != 8)
 			{
 				printf("Respuesta: %s\n", respuesta);
 				write(sock_conn, respuesta, strlen(respuesta));
@@ -362,6 +394,7 @@ void *AtenderCliente (void *socket)
 int main(int argc, char *argv[]) 
 {
 	int sock_conn, sock_listen;
+	int puerto = 50004;
 	struct sockaddr_in serv_adr;
 	
 	// Configurar el socket
@@ -373,7 +406,7 @@ int main(int argc, char *argv[])
 	memset(&serv_adr, 0, sizeof(serv_adr));
 	serv_adr.sin_family = AF_INET;
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
-	serv_adr.sin_port = htons(9060);
+	serv_adr.sin_port = htons(puerto);
 	
 	if (bind(sock_listen, (struct sockaddr *)&serv_adr, sizeof(serv_adr)) < 0) {
 		printf("Error en el bind\n");
@@ -387,8 +420,7 @@ int main(int argc, char *argv[])
 
 	
 	contador = 0;
-	int i=0;
-	int sockets[100];
+	i = 0;
 	pthread_t thread;
 
 	for(;;)

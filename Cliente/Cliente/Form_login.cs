@@ -48,7 +48,10 @@ namespace Cliente
 
                         byte[] msg2 = new byte[80];
                         server.Receive(msg2);
-                        mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                        string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
+                        int codigo = Convert.ToInt32(trozos[0]);
+                        mensaje = trozos[1].Split('\0')[0];
+
                         if (mensaje == "Si")
                         {
                             MessageBox.Show("Registro Completado");
@@ -82,7 +85,9 @@ namespace Cliente
 
                         byte[] msg2 = new byte[80];
                         server.Receive(msg2);
-                        mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                        string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
+                        int codigo = Convert.ToInt32(trozos[0]);
+                        mensaje = trozos[1].Split('\0')[0];
 
                         if (mensaje != "0")
                         {
@@ -91,6 +96,11 @@ namespace Cliente
                             Form_query form_query = new Form_query();
                             form_query.SetUser(mensaje);
                             form_query.SetServer(this.server);
+
+                            mensaje = "7/";
+                            msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                            server.Send(msg);
+
                             form_query.Show();
                             this.Close(); // Cierra el form_login
                         }
