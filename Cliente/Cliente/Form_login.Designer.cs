@@ -93,10 +93,10 @@
             this.Register_btn.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
             this.Register_btn.FlatAppearance.BorderSize = 3;
             this.Register_btn.Font = new System.Drawing.Font("Ravie", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Register_btn.Location = new System.Drawing.Point(2411, 566);
+            this.Register_btn.Location = new System.Drawing.Point(2397, 555);
             this.Register_btn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Register_btn.Name = "Register_btn";
-            this.Register_btn.Size = new System.Drawing.Size(324, 71);
+            this.Register_btn.Size = new System.Drawing.Size(392, 71);
             this.Register_btn.TabIndex = 4;
             this.Register_btn.Text = "Register!";
             this.Register_btn.UseVisualStyleBackColor = false;
@@ -188,7 +188,7 @@
             // 
             this.checkBox_r.AutoSize = true;
             this.checkBox_r.Location = new System.Drawing.Point(2768, 470);
-            this.checkBox_r.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.checkBox_r.Margin = new System.Windows.Forms.Padding(5);
             this.checkBox_r.Name = "checkBox_r";
             this.checkBox_r.Size = new System.Drawing.Size(254, 36);
             this.checkBox_r.TabIndex = 15;
@@ -200,7 +200,7 @@
             // 
             this.checkBox_l.AutoSize = true;
             this.checkBox_l.Location = new System.Drawing.Point(2768, 838);
-            this.checkBox_l.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.checkBox_l.Margin = new System.Windows.Forms.Padding(5);
             this.checkBox_l.Name = "checkBox_l";
             this.checkBox_l.Size = new System.Drawing.Size(254, 36);
             this.checkBox_l.TabIndex = 16;
@@ -213,7 +213,7 @@
             this.pictureBox1.Image = global::Cliente.Properties.Resources.imagen_fondo;
             this.pictureBox1.InitialImage = null;
             this.pictureBox1.Location = new System.Drawing.Point(100, 122);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(5);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(2027, 1313);
             this.pictureBox1.TabIndex = 17;

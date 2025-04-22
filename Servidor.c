@@ -12,6 +12,7 @@ int contador;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 int i;
 int sockets[100];
+int numSockets;
 
 typedef struct{
 	char nombre[20];
@@ -25,27 +26,28 @@ typedef struct{
 
 ListaConectados miLista;
 
-int PonConectado(ListaConectados *lista, char nombre[20]){
+int PonConectado(char nombre[20], int socket){
 	
-	if(lista->num==10)
+	if(miLista.num==10)
 	{
 		return -1;
 	}
 	else
 	{
-		strcpy(lista->conectados[lista->num].nombre, nombre);
-		lista->num++;
+		strcpy(miLista.conectados[miLista.num].nombre, nombre);
+		miLista.conectados[miLista.num].socket = socket;
+		miLista.num++;
 		return 0;
 	}
 }
 
-int DamePosicion(ListaConectados *lista, char nombre[20])
+int DamePosicion(char nombre[20])
 {
 	int i = 0;
 	int encontrado = 0;
-	while((i<lista->num) && !encontrado)
+	while((i<miLista.num) && !encontrado)
 	{
-		if(strcmp(lista->conectados[i].nombre, nombre) ==0){
+		if(strcmp(miLista.conectados[i].nombre, nombre) ==0){
 			encontrado = 1;
 		}
 		else{
@@ -60,32 +62,61 @@ int DamePosicion(ListaConectados *lista, char nombre[20])
 	}
 }
 
-int EliminaConectado(ListaConectados *lista, char nombre[20]){
+int DameSocket(char nombre[20])
+{
+	int socket;
+	int i = 0;
+	int encontrado = 0;
+	while((i<miLista.num) && !encontrado)
+	{
+		if(strcmp(miLista.conectados[i].nombre, nombre) ==0)
+		{
+			encontrado = 1;
+			socket = miLista.conectados[i].socket;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	if(encontrado)
+	{
+		return socket;
+	}
+	else{
+	return -1;
+	}
+}
+
+
+int EliminaConectado(char nombre[20]){
 	
-	int pos = DamePosicion(lista, nombre);
+	int pos = DamePosicion(nombre);
 	if(pos == -1){
+		printf("Usuario %s NO eliminado\n", nombre);
 		return -1;
 	}
 	else{
-		for(int i = pos; i < lista->num-1; i++)
+		for(int i = pos; i < miLista.num-1; i++)
 		{
-			lista->conectados[i] = lista->conectados[i+1];
+			miLista.conectados[i] = miLista.conectados[i+1];
 		}
-		lista->num--;
+		miLista.num--;
 		printf("Usuario %s eliminado\n", nombre);
+		return 1;
 	}
 }
 
-void DameConectados(ListaConectados *lista, char conectados[300]){
+void DameConectados(char conectados[300]){
 	
-	sprintf(conectados,"%d",lista->num);
-	for(int i = 0; i < lista->num; i++)
+	sprintf(conectados,"%d",miLista.num);
+	for(int i = 0; i < miLista.num; i++)
 	{
-		sprintf(conectados, "%s/%s", conectados, lista->conectados[i].nombre);
+		sprintf(conectados, "%s/%s", conectados, miLista.conectados[i].nombre);
 	}
 }
 
-void consultar_usuario(MYSQL *conn, char *username, char *password, char *respuesta) {
+void consultar_usuario(MYSQL *conn, char *username, char *password, char *respuesta, int socket) {
 	
 	
 	char consulta[256];
@@ -108,7 +139,7 @@ void consultar_usuario(MYSQL *conn, char *username, char *password, char *respue
 		sprintf(respuesta, "1/%s", row[0]);  
 		
 		pthread_mutex_lock(&mutex);
-		int res = PonConectado(&miLista, row[0]);
+		int res = PonConectado(row[0], socket);
 		pthread_mutex_unlock(&mutex);
 		
 		if(res == -1){
@@ -240,7 +271,7 @@ void *AtenderCliente (void *socket)
 		}
 		
 		int terminar = 0;
-		
+		printf("Num Sockets: %d\n", numSockets);
 		while (!terminar)
 		{
 			memset(respuesta, 0, sizeof(respuesta));
@@ -256,6 +287,7 @@ void *AtenderCliente (void *socket)
 			int id_m;
 			char *p = strtok(peticion, "/");
 			int codigo = atoi(p);
+			printf("codigo: %d", codigo);
 			
 			if (codigo != 0 && codigo < 3 || codigo == 8) {
 				p = strtok(NULL, "/");
@@ -285,11 +317,18 @@ void *AtenderCliente (void *socket)
 			
 			if (codigo == 0) 
 			{
+				for(int i = DamePosicion(username); i < miLista.num; i++)
+				{
+					printf("Socket: %d\n", sockets[i]);
+					sockets[i] = sockets[i+1];
+				}
+				numSockets--;
+				printf("Num Sockets: %d\n", numSockets);
 				terminar = 1;
 			} 
 			else if (codigo == 1)
 			{
-				consultar_usuario(conn, username, password, respuesta);
+				consultar_usuario(conn, username, password, respuesta, sock_conn);
 			} 
 			else if (codigo == 2) 
 			{
@@ -313,12 +352,12 @@ void *AtenderCliente (void *socket)
 			}
 			else if(codigo == 7)
 			{
-				DameConectados(&miLista, conectados);
+				DameConectados(conectados);
 
 				char copia_conectados[500];
 				strcpy(copia_conectados, conectados); // Copia ANTES de usar strtok
-				printf("Copia Conectados:%s", copia_conectados);
-				char *p = strtok(conectados, "/");
+				printf("Copia Conectados:%s\n", copia_conectados);
+				char *p = strtok(copia_conectados, "/");
 				int n = atoi(p);
 
 				for (int i = 0; i < n; i++)
@@ -330,26 +369,30 @@ void *AtenderCliente (void *socket)
 				}
 
 				char notificacion[500];
-				sprintf(notificacion, "7/%s", copia_conectados);
-
+				sprintf(notificacion, "7/%s", conectados);
+				printf("Notificacion: %s\n", notificacion);
+				
 				// Enviar a todos los conectados
-				for (int j = 0; j < n; j++)
+				for (int j = 0; j < numSockets; j++)
 				{
+					printf("Socket: %d\n", sockets[j]);
 					write(sockets[j], notificacion, strlen(notificacion));
 				}
 
 			}
 			else if (codigo == 8)
 			{
-				EliminaConectado(&miLista, username);
-				DameConectados(&miLista, conectados);
+				int res = EliminaConectado(username);
+				DameConectados(conectados);
 
 				// COPIA antes de usar strtok
 				char copia_conectados[500];
 				strcpy(copia_conectados, conectados);
+				printf("Copia Conectados:%s\n", copia_conectados);
 
-				char *p = strtok(conectados, "/");
+				char *p = strtok(copia_conectados, "/");
 				int n = atoi(p);
+					
 				for(int i = 0; i < n; i++)
 				{
 					char nom[20];
@@ -360,17 +403,59 @@ void *AtenderCliente (void *socket)
 
 				// Ahora usa la copia que NO se ha modificado
 				char notificacion[500];
-				sprintf(notificacion, "8/%s", copia_conectados);
-				printf("%s\n", notificacion);
-
+				sprintf(notificacion, "7/%s", conectados);
+				printf("Notificacion: %s\n", notificacion);
 				// Enviar a todos
-				for(int j = 0; j < n; j++)
+				for(int j = 0; j < numSockets; j++)
 				{
+					printf("Socket: %d\n", sockets[j]);
 					write(sockets[j], notificacion, strlen(notificacion));
-				}
-
+				}						
 			}
-			
+			else if (codigo == 9)
+			{
+				char invitacion[500];
+				int num_inv = atoi(p);
+				printf("num_inv: %d\n", num_inv);
+				p = strtok(NULL, "/");
+				char user[20];
+				strcpy(user, p);
+				printf("invitador: %s\n", user);
+				sprintf(invitacion, "9/%s", user); 
+				char nombre[20];
+				printf("invitacion: %s\n", invitacion);
+				for(int i = 0; i < num_inv; i++)
+				{
+					p = strtok(NULL, "/");
+					strcpy(nombre, p);
+					printf("%s\n", nombre);
+					int res = DameSocket(nombre);
+					printf("%d\n", res);
+					write(res, invitacion, strlen(invitacion));
+				}
+			}
+			else if( codigo == 10)
+			{
+				char respuesta_inv[100];
+				char invitado[20];
+				strcpy(invitado,p);
+				char veredicto[20];
+				p = strtok(NULL, "/");
+				strcpy(veredicto,p);
+				char invitador[20];
+				p = strtok(NULL, "/");
+				strcpy(invitador,p);
+				if(strcmp(veredicto, "acepta") ==0){
+					sprintf(respuesta_inv, "10/%s ha aceptado tu invitación", invitado);
+				}
+				else{
+					sprintf(respuesta_inv, "10/%s ha rechazado tu invitación", invitado);
+				}
+				
+				int res = DameSocket(invitador);
+				printf("%s", respuesta_inv);
+				write(res, respuesta_inv, strlen(respuesta_inv));
+			}
 			if (codigo != 0 && codigo != 7 && codigo != 8)
 			{
 				printf("Respuesta: %s\n", respuesta);
@@ -385,7 +470,8 @@ void *AtenderCliente (void *socket)
 				pthread_mutex_unlock( &mutex );
 			}
 		}
-		
+	printf("Desconectado\n");
+	pthread_exit(NULL);
 	mysql_close(conn);
 	close(sock_conn);
 }
@@ -420,7 +506,7 @@ int main(int argc, char *argv[])
 
 	
 	contador = 0;
-	i = 0;
+	numSockets = 0;
 	pthread_t thread;
 
 	for(;;)
@@ -429,11 +515,11 @@ int main(int argc, char *argv[])
 		sock_conn = accept(sock_listen, NULL, NULL);
 		printf ("He recibido conexion\n");
 		
-		sockets[i] = sock_conn;
+		sockets[numSockets] = sock_conn;
 		
-		pthread_create (&thread, NULL, AtenderCliente,&sockets[i]); 
+		pthread_create (&thread, NULL, AtenderCliente,&sockets[numSockets]); 
 		
 		
-		i++;
+		numSockets++;
 	}
 }

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Cliente
 {
-    public partial class Form_query: Form
+    public partial class Form_query : Form
     {
         Socket server;
         Thread atender;
@@ -38,9 +38,15 @@ namespace Cliente
             username_lbl.Text = "@" + user;
         }
 
+        private List<string> usuariosConectados = new List<string>();
+
+        public List<string> ObtenerUsuariosConectados()
+        {
+            return new List<string>(usuariosConectados); // Retorna una copia de la lista
+        }
         private void Query_btn_Click(object sender, EventArgs e)
         {
-            
+
             if (Query_txt.Text.Length != 0 && server != null)
             {
                 if (server.Connected)
@@ -49,20 +55,20 @@ namespace Cliente
                     {
                         if (radioButton1.Checked)
                         {
-                            string mensaje = "3/" + Query_txt.Text;
+                            string mensaje = "3/" + Query_txt.Text + "\0";
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
 
                         }
                         else if (radioButton2.Checked)
                         {
-                            string mensaje = "4/" + Query_txt.Text;
+                            string mensaje = "4/" + Query_txt.Text + "\0";
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
                         }
                         else
                         {
-                            string mensaje = "5/" + Query_txt.Text;
+                            string mensaje = "5/" + Query_txt.Text + "\0";
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
                         }
@@ -83,35 +89,43 @@ namespace Cliente
         {
             if (server != null && server.Connected)
             {
-                string mensaje = "8/" + this.user;
+                string mensaje = "8/" + this.user + "\0";
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
 
                 atender.Abort();
 
-                this.Hide(); // Oculta en vez de cerrar
-                Form_login form_login = new Form_login();
-                form_login.SetServer(server); // Mantiene la misma conexión
-                form_login.Show();
+                Form_connect form_connect = new Form_connect();
+                form_connect.SetServer(this.server);
+                form_connect.Show();
+
+                mensaje = "0/\0";
+                msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                try
+                {
+                    server.Send(msg);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al cerrar la conexión: " + ex.Message);
+                }
+
+                this.Close();
             }
         }
 
         private void Service_btn_Click(object sender, EventArgs e)
         {
-            string mensaje = "6/";
+            string mensaje = "6/\0";
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
             server.Send(msg);
-        }
-
-        private void OnlineList_btn_Click(object sender, EventArgs e)
-        {
         }
 
         private void AtenderServidor()
         {
             while (true)
             {
-                if(server != null && server.Connected)
+                if (server != null && server.Connected)
                 {
                     int numUsuarios;
                     byte[] msg2 = new byte[1024]; // Aumentamos el tamaño del buffer
@@ -158,30 +172,45 @@ namespace Cliente
                         case 6://contador
                             ServiceLbl.Text = mensaje;
                             break;
-                        case 7://consultar lista conectados
-                               // Procesar la lista de conectados
-                            numUsuarios = int.Parse(trozos[1]); // Primer elemento es el número de usuarios
-                            
-                            // Mostrar en Label con saltos de línea
+                        case 7: // Consultar lista conectados
+                            usuariosConectados.Clear();
+
+                            numUsuarios = int.Parse(trozos[1]);
                             Online_lbl.Text = $"Conectados ({numUsuarios}):\n";
 
                             for (int i = 2; i <= numUsuarios + 1; i++)
                             {
-                                Online_lbl.Text += trozos[i] + "\n";
+                                string nombre = trozos[i];
+                                usuariosConectados.Add(nombre);
+                                Online_lbl.Text += nombre + "\n";
                             }
                             break;
-                        case 8://consultar lista conectados
-                               // Procesar la lista de conectados
-                            numUsuarios = int.Parse(trozos[1]); // Primer elemento es el número de usuarios
-
-                            // Mostrar en Label con saltos de línea
-                            Online_lbl.Text = $"Conectados ({numUsuarios}):\n";
-                            if(numUsuarios > 0)
+                        case 9:
+                            if (mensaje != "0")
                             {
-                                for (int i = 2; i <= numUsuarios + 1; i++)
+                                Form_Invitacion invitacion = new Form_Invitacion(mensaje);
+                                var resultado = invitacion.ShowDialog();
+
+                                if (resultado == DialogResult.OK && invitacion.Aceptado)
                                 {
-                                    Online_lbl.Text += trozos[i] + "\n";
+                                    // Aquí puedes enviar al servidor que aceptó la invitación
+                                    string respuesta = "10/" + user + "/acepta/" + mensaje + "\0";
+                                    byte[] msgAceptar = Encoding.ASCII.GetBytes(respuesta);
+                                    server.Send(msgAceptar);
                                 }
+                                else
+                                {
+                                    // Aquí puedes enviar al servidor que rechazó
+                                    string respuesta = "10/" + user + "/rechaza/" + mensaje + "\0";
+                                    byte[] msgRechazar = Encoding.ASCII.GetBytes(respuesta);
+                                    server.Send(msgRechazar);
+                                }
+                            }
+                            break;
+                        case 10:
+                            if (mensaje != "0")
+                            { 
+                                MessageBox.Show(mensaje);
                             }
                             break;
                     }
@@ -192,16 +221,16 @@ namespace Cliente
         {
             if (server.Connected)
             {
-                Form_loby form_loby = new Form_loby();
-                form_loby.SetUser(user);
-                form_loby.SetServer(this.server);
-                form_loby.Show();
-                this.Close(); // Cierra el form_login
-            }
-        }
+                MessageBox.Show("Usuarios conectados: " + string.Join(", ", usuariosConectados));
 
-        private void Form_query_Load(object sender, EventArgs e)
-        {
+                this.Hide();
+
+                Form_loby form_loby = new Form_loby();
+                form_loby.SetServer(this.server);
+                form_loby.SetUser(this.user); 
+                form_loby.SetUsuariosConectados(usuariosConectados);
+                form_loby.Show();
+            }
         }
     }
 }

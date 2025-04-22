@@ -40,13 +40,13 @@ namespace Cliente
             {
                 if (server.Connected)
                 {
+                    string mensaje = "2/" + Register_txt.Text + "/" + register_passw_txt.Text + "\0";
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                    byte[] msg2 = new byte[80];
                     try
                     {
-                        string mensaje = "2/" + Register_txt.Text + "/" + register_passw_txt.Text;
-                        byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                        server.Send(msg);
-
-                        byte[] msg2 = new byte[80];
                         server.Receive(msg2);
                         string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
                         int codigo = Convert.ToInt32(trozos[0]);
@@ -79,7 +79,8 @@ namespace Cliente
                 {
                     try
                     {
-                        string mensaje = "1/" + Loggin_txt.Text + "/" + loggin_password_txt.Text;
+
+                        string mensaje = "1/" + Loggin_txt.Text + "/" + loggin_password_txt.Text + "\0";
                         byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                         server.Send(msg);
 
@@ -97,7 +98,7 @@ namespace Cliente
                             form_query.SetUser(mensaje);
                             form_query.SetServer(this.server);
 
-                            mensaje = "7/";
+                            mensaje = "7/\0";
                             msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
 
@@ -150,30 +151,24 @@ namespace Cliente
 
         private void back_btn_Click(object sender, EventArgs e)
         {
-            if(server != null)
+ 
+            string mensaje = "0/\0";
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            try
             {
-                if (server.Connected)
-                {
-                    try
-                    {
-                        string mensaje = "0/";
-                        byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-
-                        server.Send(msg);
-                        server.Shutdown(SocketShutdown.Both);
-                        server.Close();
-
-                        Form_connect form_connect = new Form_connect();
-                        form_connect.SetServer(this.server);
-                        form_connect.Show();
-                        this.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error al cerrar la conexión: " + ex.Message);
-                    }
-                }
+                server.Send(msg);
+                server.Shutdown(SocketShutdown.Both);
+                server.Close();
+                //form_connect.SetServer(this.server);        
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cerrar la conexión: " + ex.Message);
+            }
+            Form_connect form_connect = new Form_connect();
+            
+            form_connect.Show();
+            this.Close();
         }
 
     }
