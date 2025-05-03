@@ -8,6 +8,9 @@
 #include <mysql.h> 
 #include <pthread.h>
 
+#define MAX_JUGADORES 10
+#define MAX_PARTIDAS  5
+
 int contador;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 int i;
@@ -23,6 +26,19 @@ typedef struct{
 	Conectado conectados[10];
 	int num;
 }ListaConectados;
+
+typedef struct {
+    char nombre[20];
+} Jugador;
+
+typedef struct {
+    int idPartida;
+    Jugador jugadores[MAX_JUGADORES];
+    int numJugadores;
+} Partidas;
+
+Partidas partidas[MAX_PARTIDAS];
+int numPartidas = 0;
 
 ListaConectados miLista;
 
@@ -69,7 +85,7 @@ int DameSocket(char nombre[20])
 	int encontrado = 0;
 	while((i<miLista.num) && !encontrado)
 	{
-		if(strcmp(miLista.conectados[i].nombre, nombre) ==0)
+		if(strcmp(miLista.conectados[i].nombre, nombre) == 0)
 		{
 			encontrado = 1;
 			socket = miLista.conectados[i].socket;
@@ -84,7 +100,7 @@ int DameSocket(char nombre[20])
 		return socket;
 	}
 	else{
-	return -1;
+		return -1;
 	}
 }
 
@@ -188,7 +204,7 @@ void consultar_tiempo(MYSQL *conn, int id_m, char *respuesta) {
 	
 	if (row == NULL) {
 		printf("No se han obtenido datos en la consulta\n");   
-		sprintf(respuesta, "0");
+		sprintf(respuesta, "3/0");
 	} else {
 		sprintf(respuesta, "3/%s", row[0]);  
 	}
@@ -212,7 +228,7 @@ void consultar_duracion(MYSQL *conn, int id_m, char *respuesta) {
 	
 	if (row == NULL) {
 		printf("No se han obtenido datos en la consulta\n");   
-		sprintf(respuesta, "0");
+		sprintf(respuesta, "4/0");
 	} else {
 		sprintf(respuesta, "4/%s", row[0]);  
 	}
@@ -237,7 +253,7 @@ void consultar_ganador(MYSQL *conn, int id_m, char *respuesta) {
 	
 	if (row == NULL) {
 		printf("No se han obtenido datos en la consulta\n");   
-		sprintf(respuesta, "0");
+		sprintf(respuesta, "5/0");
 	} else {
 		sprintf(respuesta, "5/%s", row[0]);  
 	}
@@ -287,7 +303,7 @@ void *AtenderCliente (void *socket)
 			int id_m;
 			char *p = strtok(peticion, "/");
 			int codigo = atoi(p);
-			printf("codigo: %d", codigo);
+			printf("codigo: %d\n", codigo);
 			
 			if (codigo != 0 && codigo < 3 || codigo == 8) {
 				p = strtok(NULL, "/");
@@ -304,7 +320,7 @@ void *AtenderCliente (void *socket)
 				
 				printf("Codigo: %d, Nombre: %s, Contrase?a: %s\n", codigo, username, password);
 			}
-			else if (codigo!=0 && codigo!=6)
+			else if (codigo!=0 && codigo!=6 && codigo!=9)
 			{
 				p = strtok(NULL, "/");
 				if (p != NULL)
@@ -368,15 +384,14 @@ void *AtenderCliente (void *socket)
 					printf("Conectado: %s\n", nom);
 				}
 
-				char notificacion[500];
-				sprintf(notificacion, "7/%s", conectados);
-				printf("Notificacion: %s\n", notificacion);
+				sprintf(respuesta, "7/%s", conectados);
+				printf("Notificacion: %s\n", respuesta);
 				
 				// Enviar a todos los conectados
 				for (int j = 0; j < numSockets; j++)
 				{
-					printf("Socket: %d\n", sockets[j]);
-					write(sockets[j], notificacion, strlen(notificacion));
+					//printf("Socket: %d\n", sockets[j]);
+					write(sockets[j], respuesta, strlen(respuesta));
 				}
 
 			}
@@ -402,67 +417,122 @@ void *AtenderCliente (void *socket)
 				}
 
 				// Ahora usa la copia que NO se ha modificado
-				char notificacion[500];
-				sprintf(notificacion, "7/%s", conectados);
-				printf("Notificacion: %s\n", notificacion);
+				sprintf(respuesta, "7/%s", conectados);
+				printf("Notificacion: %s\n", respuesta);
 				// Enviar a todos
 				for(int j = 0; j < numSockets; j++)
 				{
 					printf("Socket: %d\n", sockets[j]);
-					write(sockets[j], notificacion, strlen(notificacion));
+					write(sockets[j], respuesta, strlen(respuesta));
 				}						
 			}
 			else if (codigo == 9)
 			{
-				char invitacion[500];
+				p = strtok(NULL, "/");
 				int num_inv = atoi(p);
 				printf("num_inv: %d\n", num_inv);
 				p = strtok(NULL, "/");
 				char user[20];
 				strcpy(user, p);
 				printf("invitador: %s\n", user);
-				sprintf(invitacion, "9/%s", user); 
-				char nombre[20];
-				printf("invitacion: %s\n", invitacion);
-				for(int i = 0; i < num_inv; i++)
+				
+				if (numPartidas < MAX_PARTIDAS) 
 				{
-					p = strtok(NULL, "/");
-					strcpy(nombre, p);
-					printf("%s\n", nombre);
-					int res = DameSocket(nombre);
-					printf("%d\n", res);
-					write(res, invitacion, strlen(invitacion));
+					partidas[numPartidas].idPartida = numPartidas;
+					partidas[numPartidas].numJugadores = 0;
+					strcpy(partidas[numPartidas].jugadores[0].nombre, user);
+					partidas[numPartidas].numJugadores++;
+					printf("Partida %d creada\n", numPartidas);
+					printf("Jugador %s añadido a la partida %d", user, numPartidas);
+					sprintf(respuesta, "9/%d/%s te ha invitado a una partida/%s", numPartidas, user, user); 
+		
+					char nombre[20];
+					
+					printf("invitacion: %s\n", respuesta);
+					///
+					for(int i = 0; i < num_inv ; i++)
+					{
+						p = strtok(NULL, "/");
+						strcpy(nombre, p);
+						int res = DameSocket(nombre);
+						printf("Nombre: %s || Socket: %d\n", nombre, res);
+						write(res, respuesta, strlen(respuesta));
+					}
+					///
+					numPartidas++;
 				}
+				else
+					printf("Se ha llegado al límite de partidas\n");
+				
 			}
-			else if( codigo == 10)
+			else if(codigo == 10)
 			{
-				char respuesta_inv[100];
+				p = strtok(NULL, "/");
 				char invitado[20];
 				strcpy(invitado,p);
-				char veredicto[20];
+				int veredicto;
 				p = strtok(NULL, "/");
-				strcpy(veredicto,p);
+				veredicto = atoi(p);
 				char invitador[20];
 				p = strtok(NULL, "/");
 				strcpy(invitador,p);
-				if(strcmp(veredicto, "acepta") ==0){
-					sprintf(respuesta_inv, "10/%s ha aceptado tu invitación", invitado);
+				if(veredicto){
+					sprintf(respuesta, "10/%s/1/%d", invitado, id_m);
+					if (partidas[id_m].numJugadores < MAX_JUGADORES) 
+					{
+						strcpy(partidas[id_m].jugadores[partidas[id_m].numJugadores].nombre, invitado);
+						partidas[id_m].numJugadores++;
+						printf("Jugador %s añadido a la partida %d\n", invitado, id_m);
+					}
 				}
 				else{
-					sprintf(respuesta_inv, "10/%s ha rechazado tu invitación", invitado);
+					sprintf(respuesta, "10/%s/0/%d", invitado, id_m);
+				}
+			
+				int res = DameSocket(invitador);
+				printf("socket: %d\n", res);
+				printf("Respuesta a invitacion: %s\n", respuesta);
+				for(int i = 0; i < partidas[id_m].numJugadores; i++){
+					printf("Jugador %d partida %d: %s\n", i, id_m, partidas[id_m].jugadores[i].nombre);
+				}
+				write(res, respuesta, strlen(respuesta) + 1);
+			}
+			else if(codigo == 11)
+			{
+				char jugador[20];
+				sprintf(respuesta, "11/%d", id_m); 
+				printf("Numero de jugadores partida %d = %d\n", id_m, partidas[id_m].numJugadores);
+				for(int i=0; i < partidas[id_m].numJugadores; i++){
+					strcpy(jugador, partidas[id_m].jugadores[i].nombre);
+					int res = DameSocket(jugador);
+					printf("Respuesta a socket %d: %s\n", res, respuesta);
+					write(res, respuesta, strlen(respuesta) + 1);
+				}
+			}
+			else if(codigo == 12){
+				char jugador[20];
+				char mensajero[20];
+				char chat[100];
+				p = strtok(NULL, "/");
+				strcpy(mensajero, p);
+				p = strtok(NULL, "/");
+				strcpy(chat, p);
+				sprintf(respuesta, "12/%s/%s", mensajero, chat);
+				
+				for(int i=0; i < partidas[id_m].numJugadores; i++){
+					strcpy(jugador, partidas[id_m].jugadores[i].nombre);
+					int res = DameSocket(jugador);
+					printf("Respuesta a socket %d: %s\n", res, respuesta);
+					write(res, respuesta, strlen(respuesta) + 1);
 				}
 				
-				int res = DameSocket(invitador);
-				printf("%s", respuesta_inv);
-				write(res, respuesta_inv, strlen(respuesta_inv));
 			}
-			if (codigo != 0 && codigo != 7 && codigo != 8)
+			if (codigo != 0 && codigo != 7 && codigo != 8 && codigo != 9 && codigo != 10 && codigo != 11 && codigo != 12)
 			{
 				printf("Respuesta: %s\n", respuesta);
 				write(sock_conn, respuesta, strlen(respuesta));
 			}
-	
-		
+			
 			if((codigo==3)||(codigo==4)||(codigo==5))
 			{
 				pthread_mutex_lock( &mutex );

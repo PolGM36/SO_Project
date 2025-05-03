@@ -40,7 +40,7 @@ namespace Cliente
             {
                 if (server.Connected)
                 {
-                    string mensaje = "2/" + Register_txt.Text + "/" + register_passw_txt.Text + "\0";
+                    string mensaje = "2/" + Register_txt.Text + "/" + register_passw_txt.Text;
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
 
@@ -80,7 +80,7 @@ namespace Cliente
                     try
                     {
 
-                        string mensaje = "1/" + Loggin_txt.Text + "/" + loggin_password_txt.Text + "\0";
+                        string mensaje = "1/" + Loggin_txt.Text + "/" + loggin_password_txt.Text;
                         byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                         server.Send(msg);
 
@@ -97,12 +97,12 @@ namespace Cliente
                             Form_query form_query = new Form_query();
                             form_query.SetUser(mensaje);
                             form_query.SetServer(this.server);
+                            form_query.Show();
 
-                            mensaje = "7/\0";
+                            mensaje = "7/";
                             msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
 
-                            form_query.Show();
                             this.Close(); // Cierra el form_login
                         }
                         else
@@ -152,7 +152,7 @@ namespace Cliente
         private void back_btn_Click(object sender, EventArgs e)
         {
  
-            string mensaje = "0/\0";
+            string mensaje = "0/";
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
             try
             {

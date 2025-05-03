@@ -17,7 +17,7 @@ namespace Cliente
         public Form_Invitacion(string mensaje)
         {
             InitializeComponent();
-            Mensaje_lbl.Text = mensaje + " te ha invitado a una partida";
+            Mensaje_lbl.Text = mensaje;
         }
 
 

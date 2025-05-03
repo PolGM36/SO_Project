@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Cliente
@@ -12,7 +13,7 @@ namespace Cliente
         Socket server;
         string user;
         private List<string> usuariosConectados = new List<string>();
-
+      
         public Form_loby()
         {
             InitializeComponent();
@@ -29,32 +30,39 @@ namespace Cliente
             username_lbl.Text = "@" + user;
         }
 
+
         // Método que recibe la lista de usuarios conectados desde Form_query
         public void SetUsuariosConectados(List<string> usuarios)
         {
             this.usuariosConectados = usuarios;
-
+            string usuario_principal = this.user.ToString();
 
             // Ahora actualizamos el CheckedListBox
             checkedListBox1.Items.Clear();
             foreach (string usuario in usuarios)
             {
-                checkedListBox1.Items.Add(usuario);
+                if(usuario.ToString() != usuario_principal)
+                {
+                    checkedListBox1.Items.Add(usuario);
+                }
             }
         }
-
+  
         private void Form_loby_Load(object sender, EventArgs e)
         {
-            // Este código se eliminará, ya que no es necesario crear una nueva instancia de Form_query
+      
         }
 
         private void back_btn_Click(object sender, EventArgs e)
         {
             if (server.Connected)
             {
-                Form_query form_query = new Form_query();
-                form_query.SetServer(server); // Asegura que el socket se pasa
-                form_query.Show();
+                //Form_query form_query = new Form_query();
+                //form_query.SetUser(this.user);
+                //form_query.SetServer(this.server);
+                //form_query.SetUsuariosConectados(this.usuariosConectados);
+                //form_query.Show();
+
                 this.Close();
             }
         }
@@ -63,7 +71,7 @@ namespace Cliente
             if (server != null && server.Connected)
             {
                 // Crear el mensaje para enviar al servidor, con los usuarios separados por "/"
-                string mensajeInvitacion = "9/" + mensaje + "\0";
+                string mensajeInvitacion = "9/" + mensaje;
                 byte[] msg = Encoding.ASCII.GetBytes(mensajeInvitacion);
 
                 try
@@ -85,7 +93,11 @@ namespace Cliente
             // Recorremos los elementos seleccionados en el CheckedListBox
             foreach (var item in checkedListBox1.CheckedItems)
             {
-                usuariosSeleccionados.Add(item.ToString());
+                if(item.ToString() != "0" && item.ToString() != null)
+                {
+                    usuariosSeleccionados.Add(item.ToString());
+                }
+                
             }
 
             // Comprobar si se seleccionaron usuarios
@@ -107,6 +119,13 @@ namespace Cliente
             {
                 MessageBox.Show("Debe seleccionar al menos un usuario para invitar.");
             }
+        }
+
+        private void IniciarPartida_btn_Click(object sender, EventArgs e)
+        {
+            string mensaje = "11/0";
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
         }
     }
 }
