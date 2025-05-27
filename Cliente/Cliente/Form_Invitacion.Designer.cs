@@ -37,7 +37,7 @@
             // 
             this.Mensaje_lbl.AutoSize = true;
             this.Mensaje_lbl.Font = new System.Drawing.Font("Ravie", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Mensaje_lbl.Location = new System.Drawing.Point(314, 186);
+            this.Mensaje_lbl.Location = new System.Drawing.Point(262, 189);
             this.Mensaje_lbl.Name = "Mensaje_lbl";
             this.Mensaje_lbl.Size = new System.Drawing.Size(169, 54);
             this.Mensaje_lbl.TabIndex = 0;

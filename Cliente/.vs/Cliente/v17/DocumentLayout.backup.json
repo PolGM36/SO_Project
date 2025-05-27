@@ -1,29 +1,29 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\",
+  "WorkspaceRootPath": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\cliente\\form_query.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|solutionrelative:cliente\\form_query.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|c:\\guillem\\uni\\2n\\b\\so\\project\\versioguillem\\cliente\\cliente\\form_partida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|solutionrelative:cliente\\form_partida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|c:\\guillem\\uni\\2n\\b\\so\\project\\versio4\\cliente\\cliente\\form_loby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|c:\\guillem\\uni\\2n\\b\\so\\project\\versioguillem\\cliente\\cliente\\form_partida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|solutionrelative:cliente\\form_partida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\cliente\\form_loby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|solutionrelative:cliente\\form_loby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\cliente\\form_invitacion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|solutionrelative:cliente\\form_invitacion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|c:\\guillem\\uni\\2n\\b\\so\\project\\versioguillem\\cliente\\cliente\\form_query.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|solutionrelative:cliente\\form_query.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\cliente\\form_login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|solutionrelative:cliente\\form_login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\cliente\\form_loby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\cliente\\form_loby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|solutionrelative:cliente\\form_loby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\cliente\\form_query.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\cliente\\form_query.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A87F72DD-F2CA-465F-B177-39184B0892C1}|Cliente\\Cliente.csproj|solutionrelative:cliente\\form_query.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
@@ -34,67 +34,67 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Form_login.cs",
-              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_login.cs",
-              "RelativeDocumentMoniker": "Cliente\\Form_login.cs",
-              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_login.cs",
-              "RelativeToolTip": "Cliente\\Form_login.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAADwv2gAAAAAAAAAAAAAAA==",
+              "Title": "Form_query.cs",
+              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_query.cs",
+              "RelativeDocumentMoniker": "Cliente\\Form_query.cs",
+              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_query.cs",
+              "RelativeToolTip": "Cliente\\Form_query.cs",
+              "ViewState": "AgIAAKUAAAAAAAAAAAAAwK8AAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T19:26:38.31Z",
+              "WhenOpened": "2025-03-11T15:36:31.337Z",
+              "IsPinned": true,
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Form_Invitacion.cs",
-              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_Invitacion.cs",
-              "RelativeDocumentMoniker": "Cliente\\Form_Invitacion.cs",
-              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_Invitacion.cs",
-              "RelativeToolTip": "Cliente\\Form_Invitacion.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABMAAAAmAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "Form_partida.cs",
+              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_partida.cs",
+              "RelativeDocumentMoniker": "Cliente\\Form_partida.cs",
+              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_partida.cs*",
+              "RelativeToolTip": "Cliente\\Form_partida.cs*",
+              "ViewState": "AgIAAJsAAAAAAAAAAAAQwLQAAABZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-23T14:32:47.225Z",
+              "WhenOpened": "2025-05-26T17:58:40.772Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Form_partida.cs [Design]",
+              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_partida.cs",
+              "RelativeDocumentMoniker": "Cliente\\Form_partida.cs",
+              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_partida.cs [Design]*",
+              "RelativeToolTip": "Cliente\\Form_partida.cs [Design]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T17:57:42.57Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Form_loby.cs",
-              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_loby.cs",
+              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_loby.cs",
               "RelativeDocumentMoniker": "Cliente\\Form_loby.cs",
-              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_loby.cs",
+              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_loby.cs",
               "RelativeToolTip": "Cliente\\Form_loby.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAYwC4AAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAIQAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-01T17:28:12.217Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Form_query.cs",
-              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_query.cs",
-              "RelativeDocumentMoniker": "Cliente\\Form_query.cs",
-              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_query.cs",
-              "RelativeToolTip": "Cliente\\Form_query.cs",
-              "ViewState": "AgIAAHcAAAAAAAAAAAAQwJQAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-11T15:36:31.337Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
               "Title": "Form_loby.cs [Design]",
-              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_loby.cs",
+              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_loby.cs",
               "RelativeDocumentMoniker": "Cliente\\Form_loby.cs",
-              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_loby.cs [Design]",
+              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_loby.cs [Design]",
               "RelativeToolTip": "Cliente\\Form_loby.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-01T17:23:39.833Z",
@@ -104,13 +104,12 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "Form_query.cs [Design]",
-              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_query.cs",
+              "DocumentMoniker": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\VersioGuillem\\Cliente\\Cliente\\Form_query.cs",
               "RelativeDocumentMoniker": "Cliente\\Form_query.cs",
-              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio4\\Cliente\\Cliente\\Form_query.cs [Design]",
-              "RelativeToolTip": "Cliente\\Form_query.cs [Design]",
+              "ToolTip": "C:\\Guillem\\UNI\\2n\\B\\SO\\Project\\Versio_5\\Cliente\\Cliente\\Form_query.cs [Design]",
+              "RelativeToolTip": "..\\..\\Versio_5\\Cliente\\Cliente\\Form_query.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-11T15:31:20.526Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-03-11T15:31:20.526Z"
             }
           ]
         }

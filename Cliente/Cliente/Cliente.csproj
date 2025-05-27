@@ -152,5 +152,26 @@
   <ItemGroup>
     <None Include="Resources\Captura de pantalla 2025-05-03 185943.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Nave.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Nave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nave2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xwing.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\meta.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\torpedo1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sonar.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

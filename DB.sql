@@ -24,18 +24,3 @@ INSERT INTO PLAYER (USERNAME, PASSWORD) VALUES ('guilly19', '1234');
 
 INSERT INTO PLAYER (USERNAME, PASSWORD) VALUES ('pogua', '1234');
 
-
-
--- Insertar una partida con valores aleatorios
-
-INSERT INTO MATCHES (ID, TIME, DURATION, WINNER) 
-
-VALUES (1, NOW(), ROUND(RAND() * 60, 2), 'guilly19');
-
-
-
--- Relacionar los jugadores con la partida
-
-INSERT INTO GAME (ID_P, ID_M) VALUES ('guilly19', 1);
-
-INSERT INTO GAME (ID_P, ID_M) VALUES ('pogua', 1);

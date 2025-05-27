@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -10,6 +11,7 @@ namespace Cliente
 {
     public partial class Form_loby : Form
     {
+        //Definición de socket
         Socket server;
         string user;
         private List<string> usuariosConectados = new List<string>();
@@ -19,12 +21,12 @@ namespace Cliente
             InitializeComponent();
         }
 
-        public void SetServer(Socket server)
+        public void SetServer(Socket server) //Definición de socket
         {
             this.server = server;
         }
 
-        public void SetUser(string username)
+        public void SetUser(string username) //Definición de usuario
         {
             this.user = username;
             username_lbl.Text = "@" + user;
@@ -53,39 +55,33 @@ namespace Cliente
       
         }
 
-        private void back_btn_Click(object sender, EventArgs e)
+        private void back_btn_Click(object sender, EventArgs e) //Botón para cerrar el form_lobby
         {
             if (server.Connected)
             {
-                //Form_query form_query = new Form_query();
-                //form_query.SetUser(this.user);
-                //form_query.SetServer(this.server);
-                //form_query.SetUsuariosConectados(this.usuariosConectados);
-                //form_query.Show();
-
                 this.Close();
             }
         }
-        private void EnviarInvitacion(string mensaje)
+        private void EnviarInvitacion(string mensaje) //Función para enviar una invitación a otros usuarios
         {
             if (server != null && server.Connected)
             {
                 // Crear el mensaje para enviar al servidor, con los usuarios separados por "/"
-                string mensajeInvitacion = "9/" + mensaje;
+                string mensajeInvitacion = "9/" + mensaje; //Petición de invitación
                 byte[] msg = Encoding.ASCII.GetBytes(mensajeInvitacion);
 
                 try
                 {
                     server.Send(msg); // Enviar el mensaje al servidor
                 }
-                catch (Exception ex)
+                catch (Exception ex) //Control de error
                 {
                     MessageBox.Show("Error al enviar la invitación: " + ex.Message);
                 }
             }
         }
 
-        private void Invitar_btn_Click(object sender, EventArgs e)
+        private void Invitar_btn_Click(object sender, EventArgs e) //Botón para invitar
         {
             // Crear una lista para almacenar los usuarios seleccionados
             List<string> usuariosSeleccionados = new List<string>();
@@ -113,7 +109,6 @@ namespace Cliente
                 // Enviar la invitación al servidor
                 EnviarInvitacion(mensajeInvitacion);
 
-                MessageBox.Show("Invitación enviada a los usuarios seleccionados.");
             }
             else
             {
@@ -121,11 +116,25 @@ namespace Cliente
             }
         }
 
-        private void IniciarPartida_btn_Click(object sender, EventArgs e)
+        private void IniciarPartida_btn_Click(object sender, EventArgs e) //Botón para iniciar una partida
         {
-            string mensaje = "11/0";
+            string mensaje = "11/0"; //Petición de inicio de partida
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
             server.Send(msg);
+            jugadoresGrid.Rows.Clear();
+            jugadores2Grid.Rows.Clear();   
+            this.Close();
+        }
+
+        //Actualización de los grids con la lista de usuarios que han aceptado o rechazado una invitación
+        public void JugadoresAceptados(string jugador)
+        {
+            jugadoresGrid.Rows.Add(jugador);
+        }
+
+        public void JugadoresRechazados(string jugador)
+        {
+            jugadores2Grid.Rows.Add(jugador);
         }
     }
 }

@@ -4,4 +4,4 @@ Vídeo v2 interfície gràfica (Guillem Fíguls): https://youtu.be/F8M9Chg6fmc?s
 Vídeo v3 (Lucas Pérez): https://youtu.be/5QpqGETABI8?si=tpQ2iDwjzfjpV0oO
 Vídeo v4 (Pol Guasch): https://youtu.be/BmLMrKVjEtM
 Vídeo v5 (Pol Guasch): https://youtu.be/qRGRJp3psOE
-
+Vídeo Versió Final (Pol Guasch): https://youtu.be/-LlKWX1pCTo

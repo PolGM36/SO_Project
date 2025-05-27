@@ -118,28 +118,43 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="0a8d1a53-ec2c-46c0-9dc0-2a3f6c018252" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\0a8d1a53-ec2c-46c0-9dc0-2a3f6c018252.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Futuro" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Futuro.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="meta" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\meta.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imagen_fondo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\imagen_fondo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ChatGPT Image Apr 1, 2025, 06_42_07 PM" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ChatGPT Image Apr 1, 2025, 06_42_07 PM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="0a8d1a53-ec2c-46c0-9dc0-2a3f6c018252" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\0a8d1a53-ec2c-46c0-9dc0-2a3f6c018252.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="loby" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\loby.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Shoot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Captura de pantalla 2025-05-03 185943.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Futuro" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Futuro.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Nave" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Nave.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nave2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nave2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Oeste" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Oeste.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Submarino" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Submarino.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="loby" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\loby.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Shoot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Captura de pantalla 2025-05-03 185943.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="xwing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\xwing.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ChatGPT Image Apr 1, 2025, 06_42_07 PM" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ChatGPT Image Apr 1, 2025, 06_42_07 PM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="torpedo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\torpedo1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sonar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sonar.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

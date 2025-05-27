@@ -20,16 +20,23 @@ namespace Cliente
             int width = this.Width;
             int height = this.Height;
 
-            start_btn.Location = new Point((width - start_btn.Width) / 2, (height - start_btn.Height) / 2);
-            label1.Location = new Point((width - label1.Width) / 2, (height - label1.Height * 4) / 2);
+            // Ajuste de label y botón de inicio de juego
+            int desplazamientoX = 170;
+
+            
+            start_btn.Location = new Point((width - start_btn.Width) / 2 - desplazamientoX, (height - start_btn.Height) / 2);
+
+            
+            label1.Location = new Point((width - label1.Width) / 2 - desplazamientoX, (height - label1.Height * 4) / 2);
+
         }
         Socket server;
 
-        public void SetServer(Socket server)
+        public void SetServer(Socket server) //Función de definición del socket
         {
             this.server = server;
         }
-        private void conectar_servidor()
+        private void conectar_servidor() //Función de conexión con el servidor
         {
             IPAddress direc = IPAddress.Parse("10.4.119.5");
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
@@ -50,7 +57,7 @@ namespace Cliente
                 return;
             }
         }
-        private void start_btn_Click(object sender, EventArgs e)
+        private void start_btn_Click(object sender, EventArgs e) //Botón start: llama a la función conectar_servidor() y se conecta a este
         {
             conectar_servidor();
         }
